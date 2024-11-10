@@ -37,3 +37,23 @@ public class ExcelDataProvider {
         return data;
     }
 }
+
+
+  @Test(dataProvider = "excelDataProvider", dataProviderClass = ExcelDataProvider.class)
+    public void loginAndSearch(String username, String password, String searchQuery) {
+        // Example test steps
+        WebElement usernameField = driver.findElement(By.id("username"));
+        WebElement passwordField = driver.findElement(By.id("password"));
+        WebElement loginButton = driver.findElement(By.id("loginButton"));
+
+        usernameField.sendKeys(username);
+        passwordField.sendKeys(password);
+        loginButton.click();
+
+        // Assuming login success, perform a search
+        WebElement searchBox = driver.findElement(By.id("searchBox"));
+        searchBox.sendKeys(searchQuery);
+        searchBox.submit();
+
+        // Assertions for validation could go here
+    }
