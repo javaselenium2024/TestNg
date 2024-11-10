@@ -1,0 +1,39 @@
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.testng.annotations.DataProvider;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Iterator;
+
+public class ExcelDataProvider {
+
+    @DataProvider(name = "excelDataProvider")
+    public Object[][] excelDataProvider() throws IOException {
+        String excelFilePath = "src/test/resources/testdata.xlsx";
+        FileInputStream fileInputStream = new FileInputStream(excelFilePath);
+        Workbook workbook = new XSSFWorkbook(fileInputStream);
+        Sheet sheet = workbook.getSheetAt(0);
+
+        int rowCount = sheet.getPhysicalNumberOfRows();
+        int columnCount = sheet.getRow(0).getPhysicalNumberOfCells();
+
+        Object[][] data = new Object[rowCount - 1][columnCount];
+
+        Iterator<Row> rowIterator = sheet.iterator();
+        rowIterator.next(); // Skip header row
+
+        int i = 0;
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            for (int j = 0; j < columnCount; j++) {
+                data[i][j] = row.getCell(j).toString();
+            }
+            i++;
+        }
+
+        workbook.close();
+        fileInputStream.close();
+        
+        return data;
+    }
+}
