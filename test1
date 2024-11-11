@@ -1,0 +1,4 @@
+ excelUtils = new ExcelUtils("path/to/yourExcelFile.xlsx", "Sheet1");
+        String[] credentials = excelUtils.getCredentials(rowNum);
+        String username = credentials[0];
+        String password = credentials[1];
